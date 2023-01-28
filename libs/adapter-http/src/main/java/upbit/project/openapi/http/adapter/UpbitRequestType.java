@@ -17,6 +17,8 @@ public enum UpbitRequestType {
     }
 
     public static String getFullUrl(UpbitRequestType requestType) {
+        System.out.println(requestType.getUrl());
         return "https://api.upbit.com/" + requestType.getUrl();
+        requestType.
     }
 }

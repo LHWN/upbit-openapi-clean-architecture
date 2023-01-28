@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("io.spring.dependency-management") version "1.0.11.RELEASE" apply false
     id("org.springframework.boot") version "2.7.3" apply false
+    id("io.freefair.lombok") version "6.4.1" apply false
 
     kotlin("jvm") version "1.6.21" apply false
     kotlin("kapt") version "1.6.21" apply false
@@ -60,4 +61,35 @@ dependencies {
 
 tasks.getByName<Test>("test") {
     useJUnitPlatform()
+}
+
+project(":libs:adapter-http") { // ... (3)
+    apply(plugin = "org.gradle.java")
+    apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "io.freefair.lombok")
+    apply(plugin = "org.jetbrains.kotlin.jvm")
+
+    the<io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension>().apply {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.7.3")
+            mavenBom("org.jetbrains.kotlin:kotlin-bom:1.6.21")
+            mavenBom("org.jetbrains.kotlinx:kotlinx-serialization-bom:1.4.1")
+        }
+
+        dependencies {
+            dependency("org.apache.commons:commons-lang3:3.12.0")
+            dependency("org.apache.commons:commons-collections4:4.4")
+            dependency("commons-io:commons-io:2.11.0")
+        }
+    }
+
+    dependencies {
+        val implementation by configurations
+
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        annotationProcessor ("org.projectlombok:lombok")
+
+        /*annotationProcessor 는 자바 컴파일러의 플러그인 중 하나입니다. 우리가 설치한 Dependency 를 통해 Annotation 을 사용하는 경우 해당 Annotation 에 대한 코드베이스를 검사하고, 수정, 생성하죠.
+        즉, 자바 컴파일러가 Lombok 의 annotation 을 인식하고 동작을 수행할 수 있도록 정의해 주어야 하는 것이죠.*/
+    }
 }
