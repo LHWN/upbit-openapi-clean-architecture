@@ -1,5 +1,6 @@
 package upbit.project.openapi.protocol.deserializer;
 
+import org.springframework.stereotype.Component;
 import upbit.project.openapi.protocol.gson.GsonUtil;
 import org.junit.platform.commons.util.StringUtils;
 import upbit.project.openapi.protocol.parameterized.ListParameterizedType;
@@ -7,7 +8,7 @@ import upbit.project.openapi.protocol.parameterized.ListParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
-
+@Component
 public class JsonDeserializer {
     private final GsonUtil gsonUtil;
 

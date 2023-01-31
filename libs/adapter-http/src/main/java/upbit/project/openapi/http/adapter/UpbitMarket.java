@@ -1,7 +1,9 @@
 package upbit.project.openapi.http.adapter;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
 
+@Getter
 public class UpbitMarket {
     private String market;
 

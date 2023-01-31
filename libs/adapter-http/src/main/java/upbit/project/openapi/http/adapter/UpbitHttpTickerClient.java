@@ -4,12 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import upbit.project.openapi.converter.market.MarketConverter;
 import upbit.project.openapi.domain.market.Market;
+import org.junit.platform.commons.util.StringUtils;
 import upbit.project.openapi.port.out.ticker.SearchTickerPort;
 import upbit.project.openapi.protocol.deserializer.JsonDeserializer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -19,15 +21,13 @@ import java.util.List;
 public class UpbitHttpTickerClient implements SearchTickerPort {
 
     private final JsonDeserializer jsonDeserializer;
-    private final MarketConverter marketConverter;
 
-    public UpbitHttpTickerClient(JsonDeserializer jsonDeserializer, MarketConverter marketConverter) {
+    public UpbitHttpTickerClient(JsonDeserializer jsonDeserializer) {
         this.jsonDeserializer = jsonDeserializer;
-        this.marketConverter = marketConverter;
     }
 
     @Override
-    public List<Market> getAllMarket() {
+    public List<UpbitMarket> getAllMarket() {
         UpbitRequestType requestType = UpbitRequestType.MARKET_ALL_V1;
         UpbitRequestQuery query = UpbitRequestQuery.builder()
                 .url(UpbitRequestType.getFullUrl(requestType))
@@ -38,7 +38,7 @@ public class UpbitHttpTickerClient implements SearchTickerPort {
         String data = request(query);
         System.out.println(data);
         List<UpbitMarket> result = jsonDeserializer.deserializeAsList(data,UpbitMarket.class);
-        return marketConverter.convert(result);
+        return result;
     }
 
     public String request(UpbitRequestQuery query) {
@@ -50,14 +50,17 @@ public class UpbitHttpTickerClient implements SearchTickerPort {
             // URL 접속 객체 conn 을 URLConnection 객체에 쓰기가 가능하도록 지정한다. default 는 false 이므로 true 로 지정하지 않으면 쓰기가 불가능하다.
             conn.setDoOutput(true);
 
-            return null;
+            if(StringUtils.isNotBlank(query.getBody())) {
+                OutputStream os = conn.getOutputStream();
+                os.write(query.getBody().getBytes());
+                os.flush();
+            }
 
+            return getApiResponse(conn);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    //https://pamyferret.tistory.com/67
-    //https://onlyfor-me-blog.tistory.com/317
     public String getApiResponse(HttpURLConnection conn) {
         try {
             BufferedReader br = new BufferedReader(

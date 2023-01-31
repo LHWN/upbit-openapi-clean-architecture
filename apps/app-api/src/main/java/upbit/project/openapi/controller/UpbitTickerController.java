@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import upbit.project.openapi.domain.market.Market;
 import upbit.project.openapi.http.adapter.UpbitHttpTickerClient;
+import upbit.project.openapi.http.adapter.UpbitMarket;
 import upbit.project.openapi.port.in.ticker.SearchTickerUseCase;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class UpbitTickerController {
     }
 
     @GetMapping("/v1/market/all")
-    public List<Market> getAllMarkets() {
+    public List<UpbitMarket> getAllMarkets() {
         return upbitHttpTickerClient.getAllMarket();
     }
 }
