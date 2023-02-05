@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: local
+  config:
+    import:
+      - 'classpath:adapter-persistence.yml'
+  batch:
+    job:
+      names: ${job.name:NONE}
+    jdbc:
+      initialize-schema: always

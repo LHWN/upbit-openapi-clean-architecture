@@ -23,6 +23,7 @@ dependencies {
 
     implementation(project(":libs:application"))
     implementation(project(":libs:adapter-http"))
+    implementation(project(":libs:adapter-persistence"))
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

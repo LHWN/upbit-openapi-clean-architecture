@@ -10,7 +10,11 @@
         </processorPath>
         <module name="upbit-openapi-clean-architecture.protocols.main" />
         <module name="upbit-openapi-clean-architecture.libs.adapter-http.main" />
+        <module name="upbit-openapi-clean-architecture.libs.adapter-persistence.main" />
         <module name="upbit-openapi-clean-architecture.libs.application.main" />
+        <module name="upbit-openapi-clean-architecture.apps.app-batch.main" />
+        <module name="upbit-openapi-clean-architecture.libs.adapter-persistence.test" />
+        <module name="upbit-openapi-clean-architecture.apps.app-batch.test" />
         <module name="upbit-openapi-clean-architecture.protocols.test" />
         <module name="upbit-openapi-clean-architecture.apps.app-api.main" />
         <module name="upbit-openapi-clean-architecture.libs.adapter-http.test" />
